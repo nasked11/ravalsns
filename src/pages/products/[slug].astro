@@ -21,6 +21,7 @@ export async function getStaticPaths() {
   });
 }
 
+const currentUrl = Astro.request.url;
 const { name, description, price, features, image, includes, gallery, others } =
   Astro.props;
 ---
@@ -33,22 +34,34 @@ const { name, description, price, features, image, includes, gallery, others } =
   </div>
 </Layout>
 
-<div class="product-item-row container">
+<!-- <div class="product-item-row container"> -->
+<div itemscope itemtype="http://schema.org/Product" class="product-item-row container">
   <div class="w-full flex flex-col justify-center gap-4">
     <div class="w-full lg:w-[396px]">
       <Text type="body" color={colors.primary}>NEW PRODUCT</Text>
     </div>
     <div class="w-full lg:w-[396px]">
+      <meta itemprop="url" content={currentUrl}>
+      <meta itemprop="productID" content={name}>
+      <meta itemprop="brand" content="JBLLL">
+      <meta itemprop="name" content={name}>
       <Text type="h3">
         {name}
       </Text>
     </div>
     <div class="w-full lg:w-4/6">
+      <meta itemprop="description" content={description}>
       <Text type="body">
         {description}
       </Text>
     </div>
     <div class="w-full lg:w-4/6 mt-4 mb-4">
+      <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <link itemprop="availability" href="http://schema.org/InStock">
+        <link itemprop="itemCondition" href="http://schema.org/NewCondition">
+        <meta itemprop="price" content={price.toString()}>
+        <meta itemprop="priceCurrency" content="USD">
+      </div>
       <Text type="h6" className=" font-extrabold">
         {`$${price}`}
       </Text>
@@ -59,6 +72,7 @@ const { name, description, price, features, image, includes, gallery, others } =
     </div>
   </div>
   <div>
+    <meta itemprop="image" content={image.desktop}>
     <img class="mb-16 lg:mb-0" src={image.desktop} alt="best-gear" />
   </div>
 </div>
